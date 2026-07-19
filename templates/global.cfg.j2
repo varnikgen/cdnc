@@ -1,0 +1,35 @@
+# Yealink Auto Provisioning Config
+# Generated: {{ now }}
+# Device: {{ device.mac }} | {{ device.model }}
+
+[phone]
+label = {{ device.mac }}
+action_url.enabled = 1
+action_url.allow_ip = {{ config.get("provision_server_ip", "0.0.0.0/0") }}
+
+[auto_provisioning]
+server_url = https://{{ config.get("server_host", "provision.internal") }}/yealink/
+config_replace = 0
+check_new_config = 1
+check_interval = 60
+trust_cert = 1
+firmware_upgrade = {{ config.get("firmware_upgrade", 1) }}
+firmware.version = {{ device.get("firmware_target") or "96.86.0.15" }}
+firmware_url = https://{{ config.get("server_host", "provision.internal") }}/firmware/
+
+[sip account.1]
+enable = 1
+label = {{ device.get("display_name", device.mac) }}
+display_name = {{ device.get("display_name", device.mac) }}
+user_name = {{ device.get("extension", "") }}
+password = {{ device.get("sip_password", "") }}
+sip_server.1.host = {{ config.get("sip_server", "127.0.0.1") }}
+sip_server.1.port = {{ config.get("sip_port", 5060) }}
+transport.1.type = udp
+
+[network]
+dhcp_enable = 1
+vlan_enable = {{ config.get("vlan_enable", 0) }}
+{% if config.get("vlan_id") %}
+vlan_id = {{ config.vlan_id }}
+{% endif %}

@@ -1,0 +1,11 @@
+{% include "global.cfg.j2" %}
+
+# T4x-specific overrides
+[features]
+dsskey.1.type = 13
+dsskey.1.label = "Directory"
+dsskey.2.type = 1
+dsskey.2.line = 1
+
+[network]
+vlan_enable = {{ config.get("vlan_enable", 1) }}
